@@ -370,6 +370,7 @@ as_character_inner <- function(m,
   if (has_col_names) {
     for (i in seq_along(col_widths)) {
       width <- col_widths[i]
+      # if (mode == 'latex') width <- width - 1
       fmt   <- sprintf(" %%%is", width)
       m[,i] <- sprintf(fmt, m[,i])
       fmt   <- sprintf("%%%is", width)

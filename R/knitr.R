@@ -45,6 +45,7 @@ as_html <- function(x, style = NULL, ..., complete = FALSE) {
 as_latex <- function(x, ...) {
 
   res <- paste0(
+    "\\setlength{\\fboxsep}{0pt}\n",
     "\\texttt{",
     as.character(x, ..., mode = 'latex'),
     "}"
