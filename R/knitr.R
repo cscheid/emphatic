@@ -35,6 +35,28 @@ as_html <- function(x, style = NULL, ..., complete = FALSE) {
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#' Render an emphatic object to Latex
+#'
+#' @param x emphatic object
+#' @param ... other arguments passed to \code{as.character.emphatic}
+#'
+#' @export
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+as_latex <- function(x, ...) {
+
+  res <- paste0(
+    "\\texttt{",
+    as.character(x, ..., mode = 'latex'),
+    "}"
+  )
+
+  class(res) <- unique(c('knit_asis', class(res)))
+
+  res
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #' Automatically output emphatic objects to HTML knitted documents.
 #'
 #' @inheritParams as_html
@@ -42,7 +64,13 @@ as_html <- function(x, style = NULL, ..., complete = FALSE) {
 #' @export
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 knit_print.emphatic <- function(x, style = NULL, ...) {
-  as_html(x, style = style, ...)
+
+  if (requireNamespace('knitr', quietly = TRUE) && knitr::is_latex_output()) {
+    as_latex(x, ...)
+  } else {
+    as_html(x, style = style, ...)
+  }
+
 }
 
 
